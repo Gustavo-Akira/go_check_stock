@@ -1,9 +1,13 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	controller "stocks/controller"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
-	
-	r.Run() 
+	r.POST("/stock", controller.AddStock)
+	r.Run()
 }
