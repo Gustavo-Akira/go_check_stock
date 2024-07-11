@@ -3,6 +3,8 @@ package controller
 import (
 	m "stocks/model"
 
+	"stocks/repository"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +15,13 @@ func AddStock(c *gin.Context) {
 
 		stockStruct, erro := m.MakeStock(stock.Price, stock.Name, stock.TargetPrice, stock.Links)
 		if erro == nil {
-			c.JSON(200, stockStruct)
+			result, e := repository.Save(stockStruct)
+			if result == "" {
+				c.JSON(200, stockStruct)
+			} else {
+				c.JSON(400, e)
+			}
+
 		} else {
 
 			c.JSON(400, erro)
@@ -21,5 +29,4 @@ func AddStock(c *gin.Context) {
 	} else {
 		c.JSON(500, e.Error())
 	}
-
 }
