@@ -15,8 +15,8 @@ func AddStock(c *gin.Context) {
 
 		stockStruct, erro := m.MakeStock(stock.Price, stock.Name, stock.TargetPrice, stock.Links)
 		if erro == nil {
-			result, e := repository.Save(stockStruct)
-			if result == "" {
+			_, e := repository.Save(stockStruct)
+			if e == nil {
 				c.JSON(200, stockStruct)
 			} else {
 				c.JSON(400, e)

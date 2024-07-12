@@ -25,5 +25,8 @@ func Save(stock m.Stock) (string, error) {
 		return "", err
 	}
 	result := client.Set(cxt, stock.Name, p, 20000)
+	if result.Err() != nil {
+		return "", result.Err()
+	}
 	return result.Result()
 }
