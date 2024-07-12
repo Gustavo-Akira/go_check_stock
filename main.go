@@ -9,5 +9,6 @@ import (
 func main() {
 	r := gin.Default()
 	r.POST("/stock", controller.AddStock)
+	r.GET("/stock", controller.RetrieveStock)
 	r.Run()
 }

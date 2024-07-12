@@ -30,3 +30,19 @@ func AddStock(c *gin.Context) {
 		c.JSON(500, e.Error())
 	}
 }
+
+func RetrieveStock(c *gin.Context) {
+
+	key := c.Query("key")
+	if key == "" {
+		c.JSON(400, gin.H{
+			"message": "key cannot be null",
+		})
+		return
+	}
+	stock, err := repository.Find(key)
+	if err != nil {
+		c.JSON(404, err.Error())
+	}
+	c.JSON(200, stock)
+}
