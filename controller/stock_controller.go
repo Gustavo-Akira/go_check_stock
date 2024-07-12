@@ -19,15 +19,21 @@ func AddStock(c *gin.Context) {
 			if e == nil {
 				c.JSON(200, stockStruct)
 			} else {
-				c.JSON(400, e)
+				c.JSON(400, gin.H{
+					"message": e.Error(),
+				})
 			}
 
 		} else {
 
-			c.JSON(400, erro)
+			c.JSON(400, gin.H{
+				"message": erro.Error(),
+			})
 		}
 	} else {
-		c.JSON(500, e.Error())
+		c.JSON(500, gin.H{
+			"message": e.Error(),
+		})
 	}
 }
 
@@ -42,7 +48,9 @@ func RetrieveStock(c *gin.Context) {
 	}
 	stock, err := repository.Find(key)
 	if err != nil {
-		c.JSON(404, err.Error())
+		c.JSON(404, gin.H{
+			"message": err.Error(),
+		})
 	}
 	c.JSON(200, stock)
 }
