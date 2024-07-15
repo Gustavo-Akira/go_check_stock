@@ -2,15 +2,14 @@ package model
 
 import (
 	exception "stocks/exception"
-	"time"
 )
 
 type Stock struct {
-	Price       float64   `json:"price"`
-	Name        string    `json:"name"`
-	TargetPrice float64   `json:"target_price"`
-	LastUpdate  time.Time `json:"last_update"`
-	Links       []string  `json:"links"`
+	Id          int64    `json:"id"`
+	Price       float64  `json:"price"`
+	Name        string   `json:"name"`
+	TargetPrice float64  `json:"target_price"`
+	Links       []string `json:"links"`
 }
 
 func MakeStock(price float64, name string, targetPrice float64, links []string) (Stock, error) {
@@ -41,7 +40,6 @@ func MakeStock(price float64, name string, targetPrice float64, links []string) 
 		Price:       price,
 		Name:        name,
 		TargetPrice: targetPrice,
-		LastUpdate:  time.Now(),
 		Links:       links,
 	}, nil
 }
