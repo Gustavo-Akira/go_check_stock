@@ -2,6 +2,7 @@ package controller
 
 import (
 	m "stocks/model"
+	"strconv"
 
 	"stocks/repository"
 
@@ -39,14 +40,14 @@ func AddStock(c *gin.Context) {
 
 func RetrieveStock(c *gin.Context) {
 
-	key := c.Query("key")
-	if key == "" {
+	key, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "key cannot be null",
 		})
 		return
 	}
-	stock, err := repository.Find(key)
+	stock, err := repository.FindById(key)
 	if err != nil {
 		c.JSON(404, gin.H{
 			"message": err.Error(),
