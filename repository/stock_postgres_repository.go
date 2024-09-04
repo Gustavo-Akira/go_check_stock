@@ -2,10 +2,11 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"stocks/model"
 	"strings"
 
-	_ "github.com/lib/pq"
+	"github.com/lib/pq"
 )
 
 func openConnection() (*sql.DB, error) {
@@ -36,8 +37,31 @@ func FindById(id int) (stock model.Stock, e error) {
 		return stock, err
 	}
 
-	query := `SELECT id, price, name, target_price FROM stock WHERE id=$1`
+	query := `SELECT id, price, name, target_price, links FROM stock WHERE id=$1`
 
-	e = conn.QueryRow(query, id).Scan(&stock.Id, &stock.Price, &stock.Name, &stock.TargetPrice)
+	e = conn.QueryRow(query, id).Scan(&stock.Id, &stock.Price, &stock.Name, &stock.TargetPrice, pq.Array(&stock.Links))
 	return stock, e
+}
+
+func FindAll() (stocks []model.Stock, e error) {
+	conn, err := openConnection()
+	var rows *sql.Rows
+	if err != nil {
+		return stocks, err
+	}
+
+	query := `SELECT id, price, name, target_price, links FROM stock`
+	rows, e = conn.Query(query)
+	var stock model.Stock
+	for rows.Next() {
+		var x []uint8
+		e = rows.Scan(&stock.Id, &stock.Price, &stock.Name, &stock.TargetPrice, pq.Array(&stock.Links))
+		if e != nil {
+			break
+		}
+		fmt.Print(x)
+		stocks = append(stocks, stock)
+	}
+
+	return stocks, e
 }

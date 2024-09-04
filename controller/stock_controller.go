@@ -57,5 +57,16 @@ func RetrieveStock(c *gin.Context) {
 }
 
 func RetrieveAllStocks(c *gin.Context) {
+	stocks, err := repository.FindAll()
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
 
+	if stocks == nil {
+		stocks = []m.Stock{}
+	}
+
+	c.JSON(200, stocks)
 }
