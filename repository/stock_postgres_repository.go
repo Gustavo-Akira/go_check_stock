@@ -28,6 +28,9 @@ func AddStock(stock model.Stock) (id int64, err error) {
 
 	query := `INSERT INTO stock(price, name, target_price, links) VALUES($1,$2,$3,$4) RETURNING id`
 	err = conn.QueryRow(query, stock.Price, stock.Name, stock.TargetPrice, "{"+strings.Join(stock.Links, ";")+"}").Scan(&id)
+	if err == nil {
+		_, err = Save(stock)
+	}
 	return id, err
 }
 

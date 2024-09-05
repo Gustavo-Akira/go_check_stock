@@ -2,6 +2,7 @@ package main
 
 import (
 	controller "stocks/controller"
+	"stocks/job"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,5 +13,6 @@ func main() {
 	r.GET("/stock", controller.RetrieveStock)
 	r.PUT("/stock/:id", controller.AddStock)
 	r.GET("/stocks", controller.RetrieveAllStocks)
+	job.CheckAgain()
 	r.Run()
 }
