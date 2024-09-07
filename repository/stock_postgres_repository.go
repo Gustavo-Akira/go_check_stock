@@ -68,3 +68,14 @@ func FindAll() (stocks []model.Stock, e error) {
 
 	return stocks, e
 }
+
+func UpdateStockValue(stock *model.Stock) (id int32, err error) {
+	conn, err := openConnection()
+	if err != nil {
+		return id, err
+	}
+
+	query := `Update stock SET price=?1 WHERE id=?2  RETURNING id`
+	err = conn.QueryRow(query, id).Scan(stock.Price, stock.Id)
+	return id, err
+}
